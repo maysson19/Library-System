@@ -1,0 +1,67 @@
+<header class="site-header">
+  <a class="brand" routerLink="/">
+    <span class="brand-ico">📖</span>
+    <span class="brand-text">
+      <b>{{ i18n.t('brand.name') }}</b>
+      <i>{{ i18n.t('brand.tagline') }}</i>
+    </span>
+  </a>
+
+  
+
+
+<nav>
+  @for (l of links(); track l.key) {
+    <a
+      [routerLink]="l.path"
+      [fragment]="l.fragment"
+      [class.active]="
+        l.fragment
+          ? activeFragment() === l.fragment
+          : !activeFragment() && l.path === currentPath()
+      "
+      (click)="
+        l.fragment
+          ? selectFragment(l.fragment)
+          : selectPage(l.path)
+      "
+    >
+      {{ i18n.t(l.key) }}
+    </a>
+  }
+</nav>
+
+
+
+  <!-- <nav>
+    @for (l of links(); track l.key) {
+      @if (l.fragment) {
+        <a [routerLink]="l.path" [fragment]="l.fragment">{{ i18n.t(l.key) }}</a>
+      } @else {
+        <a [routerLink]="l.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ i18n.t(l.key) }}</a>
+      }
+    }
+  </nav> -->
+
+  <div class="header-end">
+    @if (auth.isLoggedIn()) {
+      <a class="bell" [routerLink]="bellPath()" [title]="i18n.t('bell.title')">
+        🔔
+        @if (notif.count() > 0) {
+          <span class="count">{{ notif.count() }}</span>
+        }
+      </a>
+    }
+    <button class="lang-btn" (click)="i18n.toggle()" [title]="i18n.t('lang.title')">🌐 {{ i18n.t('lang.switch') }}</button>
+    @if (auth.isLoggedIn()) {
+      <a class="who" routerLink="/account" [title]="i18n.t('account.link')">👤 {{ auth.user()?.fullName }}</a>
+      <button class="primary" (click)="auth.logout()">{{ i18n.t('auth.logout') }}</button>
+    } @else {
+      <a class="btn-yellow small" routerLink="/login">{{ i18n.t('auth.login') }}</a>
+    }
+  </div>
+</header>
+
+<main>
+  <router-outlet />
+</main>

@@ -1,0 +1,12 @@
+target/
+node_modules/
+dist/
+.angular/
+.idea/
+*.iml
+.vscode/
+*.log
+src-backup-*/
+*.backup
+*.backup.css
+application-local.properties
